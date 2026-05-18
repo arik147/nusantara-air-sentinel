@@ -66,7 +66,7 @@ Data disimpan dalam tabel `weather_air_metrics` dengan struktur kolom sebagai be
 
 ### 1. Kloning Repositori & Instalasi Dependensi
 ```bash
-git clone https://github.com/USERNAME-ANDA/weather-air-portfolio.git
+git clone https://github.com/arik147/weather-air-portfolio.git
 cd weather-air-portfolio
 pip install -r requirements.txt
 ```
