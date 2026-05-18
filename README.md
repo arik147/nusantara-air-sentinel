@@ -25,13 +25,13 @@ graph TD
         GH_Actions[GitHub Actions Scheduler] -->|Tiap Jam / Cron| ETL_Script[Skrip Python ETL]
     end
     
-    ETL_Script -->|2. Tarik Data Cuaca & AQI Sekaligus| WeatherAPI[WeatherAPI.com API]
+    ETL_Script -->|2. Tarik Data Cuaca dan AQI Sekaligus| WeatherAPI[WeatherAPI.com API]
     
-    ETL_Script -->|3. Clean & Process (Pandas & US-EPA Formula)| ETL_Script
-    ETL_Script -->|4. Simpan Data Historis (Upsert)| Supabase[(Supabase PostgreSQL)]
+    ETL_Script -->|3. Clean dan Process dengan Pandas dan US-EPA Formula| ETL_Script
+    ETL_Script -->|4. Simpan Data Historis| Supabase[(Supabase PostgreSQL)]
     
     subgraph Presentation Layer
-        StreamlitApp[Aplikasi Streamlit] -->|Query Data Realtime & Historis| Supabase
+        StreamlitApp[Aplikasi Streamlit] -->|Query Data Realtime dan Historis| Supabase
         StreamlitCloud[Streamlit Cloud] -->|Hosting Aplikasi| StreamlitApp
     end
     
