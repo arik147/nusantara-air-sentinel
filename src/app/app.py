@@ -18,7 +18,7 @@ load_dotenv()
 # 1. SETUP PAGE CONFIG & TEMA
 # ==========================================
 st.set_page_config(
-    page_title="Weather & Air Quality Realtime Dashboard",
+    page_title="Nusantara Air Sentinel",
     page_icon="🌤️",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -217,8 +217,8 @@ latest_data = df_city.iloc[0]
 # ==========================================
 col_title, col_status = st.columns([4, 1])
 with col_title:
-    st.markdown(f"<h1 style='margin-bottom:0px;'>🌤️ Dashboard Cuaca & Kualitas Udara Realtime</h1>", unsafe_allow_html=True)
-    st.markdown(f"<p style='color: #94a3b8; font-size:1.1rem;'>Stasiun Pemantauan Otomatis: <b>{latest_data['city']}, {latest_data['country']}</b></p>", unsafe_allow_html=True)
+    st.markdown(f"<h1 style='margin-bottom:0px;'>🌤️ Nusantara Air Sentinel</h1>", unsafe_allow_html=True)
+    st.markdown(f"<p style='color: #94a3b8; font-size:1.1rem;'>Platform Pemantauan Cuaca & Kualitas Udara Real-Time 52 Kota: <b>{latest_data['city']}, {latest_data['country']}</b></p>", unsafe_allow_html=True)
 
 with col_status:
     # Waktu Update WIB

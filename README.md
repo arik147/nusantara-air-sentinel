@@ -1,5 +1,5 @@
-# 🌤️ Weather & Air Quality Realtime Portfolio Dashboard
-### 🏗️ Supabase Zero Cost Stack (ETL Pipeline + PostgreSQL + Streamlit + GitHub Actions)
+# 🌤️ Nusantara-Air-Sentinel: Real-Time Weather & Air Quality Data Pipeline
+### 🏗️ Serverless Modern Data Stack (ETL Pipeline + Supabase PostgreSQL + Streamlit + GitHub Actions)
 
 [![Python](https://img.shields.io/badge/Python-3.10-blue.svg)](https://www.python.org/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-red.svg)](https://streamlit.io/)
@@ -7,13 +7,15 @@
 [![GitHub Actions](https://img.shields.io/badge/GitHub--Actions-Scheduler-blueviolet.svg)](https://github.com/features/actions)
 [![Pandas](https://img.shields.io/badge/Pandas-ETL-orange.svg)](https://pandas.pydata.org/)
 
-Sebuah proyek **Portofolio Data End-to-End** berskala produksi untuk memantau cuaca dan kualitas udara secara realtime di berbagai kota besar di Indonesia. Sistem ini mengintegrasikan pengumpulan data (*Data Engineering ETL*), penyimpanan basis data relasional (*Data Storage*), otomatisasi tanpa server (*Serverless Automation*), hingga visualisasi interaktif tingkat tinggi (*Data Visualization*) secara **100% GRATIS (Zero Cost)**.
+**Nusantara-Air-Sentinel** adalah platform data engineering end-to-end berskala produksi yang dirancang untuk mengumpulkan, memproses, dan memvisualisasikan data cuaca serta kualitas udara ($PM_{2.5}, PM_{10}, O_3, NO_2, SO_2, CO$) secara *real-time* di **52 kota strategis** yang tersebar di seluruh kepulauan Indonesia.
+
+Sistem ini mengintegrasikan seluruh tahapan modern data stack (ETL, Data Storage, Serverless Orchestration, dan Presentation) dengan skema **100% GRATIS (Zero-Cost Stack)**.
 
 ---
 
 ## 🗺️ Gambaran Arsitektur Sistem
 
-Proyek ini dibangun menggunakan konsep **Decoupled Architecture** (memisahkan pengolahan data backend dengan visualisasi frontend) demi keandalan sistem:
+Proyek ini menggunakan **Decoupled Architecture** (memisahkan pemrosesan data backend dengan visualisasi frontend) untuk performa optimal dan reliabilitas yang tinggi:
 
 ```mermaid
 graph TD
@@ -23,11 +25,10 @@ graph TD
         GH_Actions[GitHub Actions Scheduler] -->|Tiap Jam / Cron| ETL_Script[Skrip Python ETL]
     end
     
-    ETL_Script -->|2. Tarik Data Mentah| OpenWeather[OpenWeatherMap API]
-    ETL_Script -->|3. Tarik Data Polusi| WAQI[WAQI API]
+    ETL_Script -->|2. Tarik Data Cuaca & AQI Sekaligus| WeatherAPI[WeatherAPI.com API]
     
-    ETL_Script -->|4. Clean & Process Pandas| ETL_Script
-    ETL_Script -->|5. Simpan Data Historis| Supabase[(Supabase PostgreSQL)]
+    ETL_Script -->|3. Clean & Process (Pandas & US-EPA Formula)| ETL_Script
+    ETL_Script -->|4. Simpan Data Historis (Upsert)| Supabase[(Supabase PostgreSQL)]
     
     subgraph Presentation Layer
         StreamlitApp[Aplikasi Streamlit] -->|Query Data Realtime & Historis| Supabase
@@ -41,18 +42,17 @@ graph TD
 
 ## 🛠️ Pilihan Teknologi (Tech Stack)
 
-1.  **Data Source (API)**:
-    *   **OpenWeatherMap API**: Digunakan untuk mengambil kondisi cuaca (suhu, kelembaban, kecepatan angin, deskripsi cuaca, kode ikon) secara realtime.
-    *   **WAQI (World Air Quality Index) API**: Menyuplai stasiun polusi udara terdekat berdasarkan koordinat GPS dari OpenWeatherMap, mengembalikan metrik AQI utama serta polutan detail ($PM_{2.5}, PM_{10}, O_3, NO_2, SO_2, CO$).
+1.  **Data Source (Unified API)**:
+    *   **WeatherAPI.com**: Pustaka data tunggal terpadu yang menyajikan parameter cuaca fisik dan polusi kimia udara ($PM_{2.5}, PM_{10}, O_3, NO_2, SO_2, CO$) dalam satu pemanggilan API per kota.
 2.  **Data Engineering (ETL Pipeline)**:
-    *   **Python (`requests`, `pandas`)**: Skrip backend (`src/etl/etl.py`) untuk penarikan data, pembersihan data mentah, konversi satuan, pengindeksan kategori AQI ke bahasa Indonesia, serta penanganan error stasiun secara otomatis.
+    *   **Python (`requests`, `pandas`)**: Skrip backend (`src/etl/etl.py`) untuk penarikan paralel data dari 52 kota, pembersihan data mentah, serta konversi unit metrik secara presisi.
+    *   **US-EPA Standards Algorithm**: Implementasi fungsi matematika interpolasi breakpoints US-EPA secara lokal untuk menghitung skor Air Quality Index (AQI) murni berdasarkan konsentrasi debu halus ($PM_{2.5}$).
 3.  **Database Storage**:
-    *   **Supabase (PostgreSQL)**: Menyimpan data historis terstruktur secara aman. Dilengkapi indeks performa (`idx_metrics_city_recorded_at`) dan aturan pencegahan duplikasi data melalui *Unique Constraints* pada kombinasi nama kota dan waktu pencatatan.
+    *   **Supabase (PostgreSQL)**: Menggunakan Relational Database tangguh di cloud. Dilengkapi dengan *Index Performance* (`idx_metrics_city_recorded_at`) dan aturan integritas data *Unique Constraints* (`unique_city_recorded_at`) guna mencegah data duplikat meskipun pipeline dipicu berulang kali.
 4.  **Automation Scheduler**:
-    *   **GitHub Actions**: Cron Job serverless gratis yang memicu skrip ETL setiap jam secara otomatis tanpa perlu menyewa VPS.
-5.  **Data Visualization (Frontend)**:
-    *   **Streamlit & Plotly**: Dashboard interaktif premium dengan UI bertema gelap, *glassmorphism*, peta interaktif Mapbox yang menunjukkan sebaran kualitas udara nasional, tren grafik interaktif multiaxis, grafik korelasi cuaca vs polusi, serta panel panduan kesehatan cerdas.
-    *   **Streamlit Community Cloud**: Tempat deployment frontend yang *Always-On* (tidak tidur/tanpa *cold start*) secara gratis.
+    *   **GitHub Actions**: Cron Job serverless terkelola yang memicu ETL secara otomatis setiap 1 jam sekali tanpa memerlukan server VPS berbayar.
+5.  **Presentation & BI Dashboard**:
+    *   **Streamlit & Plotly**: Visualisasi interaktif premium bertema gelap (*glassmorphism*), peta interaktif Mapbox sebaran nasional, diagram multi-axis waktu nyata, dan kartu peringatan rekomendasi aktivitas kesehatan yang dinamis.
 
 ---
 
@@ -63,19 +63,21 @@ Data disimpan dalam tabel `weather_air_metrics` dengan struktur kolom sebagai be
 | Nama Kolom | Tipe Data | Deskripsi |
 | :--- | :--- | :--- |
 | `id` | SERIAL (PK) | Auto-increment ID unik. |
-| `city` | VARCHAR | Nama kota pantauan. |
-| `country` | VARCHAR | Kode negara stasiun (default: `ID`). |
-| `recorded_at` | TIMESTAMPTZ | Waktu pembacaan resmi data cuaca (UTC). |
+| `city` | VARCHAR(100) | Nama kota pantauan (52 kota Nusantara). |
+| `country` | VARCHAR(10) | Kode negara stasiun (default: `ID`). |
+| `latitude` | DOUBLE PRECISION | Koordinat Lintang geografis. |
+| `longitude` | DOUBLE PRECISION | Koordinat Bujur geografis. |
+| `recorded_at` | TIMESTAMPTZ | Waktu resmi data diperbarui oleh stasiun (UTC). |
 | `temperature` | REAL | Temperatur udara saat ini (°C). |
 | `humidity` | REAL | Kelembaban relatif udara (%). |
 | `wind_speed` | REAL | Kecepatan angin aktual (km/jam). |
-| `weather_description` | VARCHAR | Keterangan kondisi cuaca (e.g., "Hujan Sedang"). |
-| `weather_icon` | VARCHAR | Kode ikon grafis cuaca dari OpenWeather. |
-| `aqi` | INTEGER | Skor Air Quality Index (skala US EPA). |
-| `aqi_category` | VARCHAR | Kategori kualitas udara (e.g., "Baik", "Sedang"). |
+| `weather_description` | VARCHAR(100) | Keterangan kondisi cuaca (e.g., "Hujan Sedang"). |
+| `weather_icon` | VARCHAR(255) | URL ikon kondisi grafis cuaca dari WeatherAPI. |
+| `aqi` | INTEGER | Skor Air Quality Index hasil kalkulasi US-EPA. |
+| `aqi_category` | VARCHAR(50) | Kategori kualitas udara (e.g., "Baik", "Sedang"). |
 | `pm25` / `pm10` | REAL | Konsentrasi debu halus/kasar (µg/m³). |
-| `no2` / `so2` / `o3` / `co` | REAL | Konsentrasi zat kimia gas di udara (µg/m³). |
-| `created_at` | TIMESTAMPTZ | Timestamp baris data dimasukkan ke DB. |
+| `no2` / `so2` / `o3` / `co` | REAL | Konsentrasi zat polutan kimia (µg/m³). |
+| `created_at` | TIMESTAMPTZ | Timestamp data dimasukkan ke database. |
 
 ---
 
@@ -95,8 +97,7 @@ pip install -r requirements.txt
 ### 3. Konfigurasi Variabel Lingkungan
 Buat file `.env` di root direktori proyek ini dan isi kredensial berikut:
 ```env
-OPENWEATHER_API_KEY=kunci_api_openweather_anda
-WAQI_API_TOKEN=token_api_waqi_anda
+WEATHERAPI_KEY=kunci_api_weatherapi_anda
 SUPABASE_URL=https://project-id-anda.supabase.co
 SUPABASE_KEY=anon-public-key-supabse-anda
 ```
@@ -106,14 +107,12 @@ Lakukan uji coba pipeline pengolahan data Anda secara lokal:
 ```bash
 python src/etl/etl.py
 ```
-*Skrip ini akan mengambil data, mengolahnya dengan Pandas, dan menyimpannya di database Supabase.*
 
 ### 5. Menjalankan Dashboard Streamlit
 Nyalakan server visualisasi dashboard lokal Anda:
 ```bash
 streamlit run src/app/app.py
 ```
-*Aplikasi akan otomatis terbuka di browser Anda pada alamat `http://localhost:8501`.*
 
 ---
 
@@ -125,7 +124,7 @@ streamlit run src/app/app.py
     ```bash
     git init
     git add .
-    git commit -m "Initial commit: Supabase Zero Cost Stack"
+    git commit -m "Initial commit: Nusantara Air Sentinel"
     git branch -M main
     git remote add origin https://github.com/USERNAME/weather-air-portfolio.git
     git push -u origin main
@@ -134,19 +133,18 @@ streamlit run src/app/app.py
 ### 2. Mengaktifkan Otomatisasi GitHub Actions (ETL Scheduler)
 *   Buka tab **Settings** di repositori GitHub Anda.
 *   Pilih menu **Secrets and variables** -> **Actions**.
-*   Buat **New repository secret** untuk keempat kredensial berikut:
-    *   `OPENWEATHER_API_KEY`
-    *   `WAQI_API_TOKEN`
+*   Buat **New repository secret** untuk ketiga kredensial berikut:
+    *   `WEATHERAPI_KEY`
     *   `SUPABASE_URL`
     *   `SUPABASE_KEY`
-*   *Selesai!* GitHub Actions sekarang akan otomatis berjalan setiap jam secara serverless untuk menarik data cuaca dan menyimpannya di Supabase. Anda juga bisa memicunya secara manual via tab **Actions** -> **Run Weather & AQI ETL Pipeline** -> Klik **Run workflow**.
+*   *Selesai!* GitHub Actions sekarang akan otomatis berjalan setiap jam secara serverless untuk menarik data cuaca dan menyimpannya di Supabase.
 
 ### 3. Deploy Frontend ke Streamlit Community Cloud
-*   Kunjungi [share.streamlit.io](https://share.streamlit.io/) dan buat akun menggunakan akun GitHub Anda.
+*   Kunjungi [share.streamlit.io](https://share.streamlit.io/) dan login menggunakan akun GitHub Anda.
 *   Klik tombol **Create App**, pilih repositori `weather-air-portfolio`, pilih branch `main`, dan set path file utama ke `src/app/app.py`.
 *   Sebelum mengklik Deploy, klik **Advanced Settings** dan masukkan kredensial database Supabase Anda pada kotak **Secrets** agar Streamlit bisa membaca database secara aman:
     ```toml
     SUPABASE_URL = "https://project-id-anda.supabase.co"
     SUPABASE_KEY = "anon-public-key-supabase-anda"
     ```
-*   Klik **Deploy!** Website dashboard realtime Anda sekarang sudah aktif secara publik dan siap dipamerkan di CV atau portofolio Anda! 🚀
+*   Klik **Deploy!** Website dashboard realtime Anda sekarang sudah aktif secara publik dan siap dicantumkan di CV Anda! 🚀
