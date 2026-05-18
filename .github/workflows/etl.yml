@@ -13,17 +13,15 @@ on:
 jobs:
   run-etl:
     runs-on: ubuntu-latest
-    env:
-      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
 
     steps:
     # 1. Checkout kode dari repositori GitHub
     - name: Checkout Repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     # 2. Setup Python environment
     - name: Set up Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: '3.10'
         cache: 'pip' # Mengaktifkan caching otomatis untuk pip dependencies agar jalannya cepat
