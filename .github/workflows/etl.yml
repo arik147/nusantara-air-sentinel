@@ -13,6 +13,9 @@ on:
 jobs:
   run-etl:
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
 
     steps:
     # 1. Checkout kode dari repositori GitHub
@@ -42,3 +45,13 @@ jobs:
         SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
       run: |
         python src/etl/etl.py
+
+    # 5. Bersihkan riwayat workflow agar tidak menumpuk ("nyampah")
+    - name: Delete old workflow runs
+      uses: Mattraks/delete-workflow-runs@v2
+      with:
+        token: ${{ github.token }}
+        repository: ${{ github.repository }}
+        retain_days: 2
+        keep_minimum_runs: 5
+
