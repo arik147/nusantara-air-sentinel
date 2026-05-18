@@ -17,26 +17,7 @@ Sistem ini mengintegrasikan seluruh tahapan modern data stack (ETL, Data Storage
 
 Proyek ini menggunakan **Decoupled Architecture** (memisahkan pemrosesan data backend dengan visualisasi frontend) untuk performa optimal dan reliabilitas yang tinggi:
 
-```mermaid
-graph TD
-    Dev[Pengguna / Developer] -->|1. Push Code| GitHub[GitHub Repository]
-    
-    subgraph GitHub Automation
-        GH_Actions[GitHub Actions Scheduler] -->|Tiap Jam / Cron| ETL_Script[Skrip Python ETL]
-    end
-    
-    ETL_Script -->|2. Tarik Data Cuaca dan AQI Sekaligus| WeatherAPI[WeatherAPI.com API]
-    
-    ETL_Script -->|3. Clean dan Process dengan Pandas dan US-EPA Formula| ETL_Script
-    ETL_Script -->|4. Simpan Data Historis| Supabase[(Supabase PostgreSQL)]
-    
-    subgraph Presentation Layer
-        StreamlitApp[Aplikasi Streamlit] -->|Query Data Realtime dan Historis| Supabase
-        StreamlitCloud[Streamlit Cloud] -->|Hosting Aplikasi| StreamlitApp
-    end
-    
-    EndUser([Pengguna Publik]) -->|Akses URL| StreamlitCloud
-```
+![Gambaran Arsitektur Sistem](assets/architecture.png)
 
 ---
 
