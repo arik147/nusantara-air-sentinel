@@ -74,6 +74,19 @@ pip install -r requirements.txt
 ### 2. Konfigurasi Database Supabase
 *   Masuk ke project Supabase Anda, lalu buka menu **SQL Editor**.
 *   Salin isi file [schema.sql](src/database/schema.sql) ke editor SQL tersebut dan klik **Run** untuk membuat tabel database.
+*   **Keamanan (Sangat Penting)**: Agar database Anda aman dari modifikasi pihak luar, jalankan SQL berikut untuk mengaktifkan **Row Level Security (RLS)** dan memberikan izin baca (SELECT) secara publik:
+    ```sql
+    -- 1. Aktifkan RLS
+    ALTER TABLE public.weather_air_metrics ENABLE ROW LEVEL SECURITY;
+
+    -- 2. Berikan izin SELECT (baca) publik untuk dashboard
+    CREATE POLICY "allow_public_read" 
+      ON public.weather_air_metrics 
+      FOR SELECT 
+      TO anon, authenticated 
+      USING (true);
+    ```
+    *Catatan: Skrip ETL menggunakan `SUPABASE_SERVICE_KEY` (service_role) yang secara otomatis melewati aturan RLS untuk menulis data.*
 
 ### 3. Konfigurasi Variabel Lingkungan
 Buat file `.env` di root direktori proyek ini dan isi kredensial berikut:
@@ -121,6 +134,7 @@ streamlit run src/app/app.py
     *   `SUPABASE_URL`
     *   `SUPABASE_SERVICE_KEY` ← Gunakan **service role key** (bukan anon key)
 *   *Selesai!* GitHub Actions sekarang akan otomatis berjalan **setiap 3 jam** secara serverless untuk menarik data cuaca dan menyimpannya di Supabase.
+*   **Fitur Self-Cleaning**: Workflow ini dilengkapi dengan modul auto-cleanup yang otomatis menghapus riwayat log/run yang sudah lama (hanya menyimpan riwayat 2 hari terakhir atau minimal 5 runs) sehingga tab Actions repositori Anda tetap bersih dan rapi ("tidak nyampah").
 
 ### 3. Deploy Frontend ke Streamlit Community Cloud
 *   Kunjungi [share.streamlit.io](https://share.streamlit.io/) dan login menggunakan akun GitHub Anda.
