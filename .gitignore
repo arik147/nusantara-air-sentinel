@@ -1,0 +1,30 @@
+# Python virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Python cache & build files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+build/
+dist/
+*.egg-info/
+
+# Streamlit config & cache
+.streamlit/
+
+# Environment variables (SENSITIVE - NEVER COMMIT TO GIT)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# OS specific files
+.DS_Store
+Thumbs.db

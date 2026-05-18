@@ -1,0 +1,43 @@
+# GitHub Actions Workflow: Cron Job Scheduler for Weather & Air Quality ETL
+# Trigger: Runs every hour or manually on-demand
+
+name: Run Weather & AQI ETL Pipeline
+
+on:
+  schedule:
+    # Berjalan otomatis setiap jam pada menit ke-0 (misal: 01:00, 02:00, dst)
+    - cron: '0 * * * *'
+  workflow_dispatch:
+    # Memungkinkan pemicuan manual langsung dari tab Actions di repositori GitHub
+
+jobs:
+  run-etl:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Checkout kode dari repositori GitHub
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    # 2. Setup Python environment
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip' # Mengaktifkan caching otomatis untuk pip dependencies agar jalannya cepat
+
+    # 3. Instal semua pustaka dependensi dari requirements.txt
+    - name: Install Dependencies
+      run: |
+        python -ms pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # 4. Jalankan Pipeline ETL
+    - name: Execute ETL Script
+      env:
+        # Menghubungkan variabel lingkungan skrip ke GitHub Secrets yang aman
+        WEATHERAPI_KEY: ${{ secrets.WEATHERAPI_KEY }}
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      run: |
+        python src/etl/etl.py
