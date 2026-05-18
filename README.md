@@ -1,5 +1,5 @@
 # 🌤️ Nusantara-Air-Sentinel: Real-Time Weather & Air Quality Data Pipeline
-### 🏗️ Serverless Modern Data Stack (ETL Pipeline + Supabase PostgreSQL + Streamlit + GitHub Actions)
+### 🏗️ Serverless Modern Data Stack (ETL Pipeline v2.0 + Supabase PostgreSQL + Streamlit + GitHub Actions)
 
 [![Python](https://img.shields.io/badge/Python-3.10-blue.svg)](https://www.python.org/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-red.svg)](https://streamlit.io/)
@@ -25,13 +25,13 @@ Proyek ini menggunakan **Decoupled Architecture** (memisahkan pemrosesan data ba
 
 1.  **Data Source (Unified API)**:
     *   **WeatherAPI.com**: Pustaka data tunggal terpadu yang menyajikan parameter cuaca fisik dan polusi kimia udara ($PM_{2.5}, PM_{10}, O_3, NO_2, SO_2, CO$) dalam satu pemanggilan API per kota.
-2.  **Data Engineering (ETL Pipeline)**:
-    *   **Python (`requests`, `pandas`)**: Skrip backend (`src/etl/etl.py`) untuk penarikan paralel data dari 52 kota, pembersihan data mentah, serta konversi unit metrik secara presisi.
+2.  **Data Engineering (ETL Pipeline v2.0)**:
+    *   **Python (`requests`, `pandas`, `concurrent.futures`)**: Skrip backend (`src/etl/etl.py`) dengan **parallel fetching** (10 worker threads) untuk penarikan data dari 52 kota secara simultan, dilengkapi **automatic retry** (3x dengan exponential backoff), **data validation**, dan **batch upsert** dalam 1 query.
     *   **US-EPA Standards Algorithm**: Implementasi fungsi matematika interpolasi breakpoints US-EPA secara lokal untuk menghitung skor Air Quality Index (AQI) murni berdasarkan konsentrasi debu halus ($PM_{2.5}$).
 3.  **Database Storage**:
-    *   **Supabase (PostgreSQL)**: Menggunakan Relational Database tangguh di cloud. Dilengkapi dengan *Index Performance* (`idx_metrics_city_recorded_at`) dan aturan integritas data *Unique Constraints* (`unique_city_recorded_at`) guna mencegah data duplikat meskipun pipeline dipicu berulang kali.
+    *   **Supabase (PostgreSQL)**: Menggunakan Relational Database tangguh di cloud. Dilengkapi dengan *Row Level Security (RLS)* untuk keamanan akses, *Index Performance* (`idx_metrics_city_recorded_at`), dan aturan integritas data *Unique Constraints* (`unique_city_recorded_at`) guna mencegah data duplikat meskipun pipeline dipicu berulang kali.
 4.  **Automation Scheduler**:
-    *   **GitHub Actions**: Cron Job serverless terkelola yang memicu ETL secara otomatis setiap 1 jam sekali tanpa memerlukan server VPS berbayar.
+    *   **GitHub Actions**: Cron Job serverless terkelola yang memicu ETL secara otomatis setiap **3 jam** sekali (8 titik data/hari per kota) tanpa memerlukan server VPS berbayar.
 5.  **Presentation & BI Dashboard**:
     *   **Streamlit & Plotly**: Visualisasi interaktif premium bertema gelap (*glassmorphism*), peta interaktif Mapbox sebaran nasional, diagram multi-axis waktu nyata, dan kartu peringatan rekomendasi aktivitas kesehatan yang dinamis.
 
@@ -80,8 +80,10 @@ Buat file `.env` di root direktori proyek ini dan isi kredensial berikut:
 ```env
 WEATHERAPI_KEY=kunci_api_weatherapi_anda
 SUPABASE_URL=https://project-id-anda.supabase.co
-SUPABASE_KEY=anon-public-key-supabse-anda
+SUPABASE_KEY=anon-public-key-supabase-anda
+SUPABASE_SERVICE_KEY=service-role-key-supabase-anda
 ```
+> **Catatan**: `SUPABASE_KEY` (anon key) digunakan oleh Dashboard untuk read-only. `SUPABASE_SERVICE_KEY` (service role key) digunakan oleh ETL Pipeline untuk write access yang mem-bypass Row Level Security. Dapatkan keduanya di Supabase Dashboard → Settings → API.
 
 ### 4. Menjalankan Skrip ETL (Data Pipeline)
 Lakukan uji coba pipeline pengolahan data Anda secara lokal:
@@ -117,8 +119,8 @@ streamlit run src/app/app.py
 *   Buat **New repository secret** untuk ketiga kredensial berikut:
     *   `WEATHERAPI_KEY`
     *   `SUPABASE_URL`
-    *   `SUPABASE_KEY`
-*   *Selesai!* GitHub Actions sekarang akan otomatis berjalan setiap jam secara serverless untuk menarik data cuaca dan menyimpannya di Supabase.
+    *   `SUPABASE_SERVICE_KEY` ← Gunakan **service role key** (bukan anon key)
+*   *Selesai!* GitHub Actions sekarang akan otomatis berjalan **setiap 3 jam** secara serverless untuk menarik data cuaca dan menyimpannya di Supabase.
 
 ### 3. Deploy Frontend ke Streamlit Community Cloud
 *   Kunjungi [share.streamlit.io](https://share.streamlit.io/) dan login menggunakan akun GitHub Anda.

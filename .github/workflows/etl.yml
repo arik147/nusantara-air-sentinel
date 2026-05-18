@@ -1,12 +1,12 @@
 # GitHub Actions Workflow: Cron Job Scheduler for Weather & Air Quality ETL
-# Trigger: Runs every hour or manually on-demand
+# Trigger: Runs every 3 hours or manually on-demand
 
 name: Run Weather & AQI ETL Pipeline
 
 on:
   schedule:
-    # Berjalan otomatis setiap jam pada menit ke-0 (misal: 01:00, 02:00, dst)
-    - cron: '0 * * * *'
+    # Berjalan otomatis setiap 3 jam pada menit ke-0 (00:00, 03:00, 06:00, dst UTC)
+    - cron: '0 */3 * * *'
   workflow_dispatch:
     # Memungkinkan pemicuan manual langsung dari tab Actions di repositori GitHub
 
@@ -38,6 +38,7 @@ jobs:
         # Menghubungkan variabel lingkungan skrip ke GitHub Secrets yang aman
         WEATHERAPI_KEY: ${{ secrets.WEATHERAPI_KEY }}
         SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-        SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        # Service role key untuk bypass RLS (write access ke database)
+        SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
       run: |
         python src/etl/etl.py
