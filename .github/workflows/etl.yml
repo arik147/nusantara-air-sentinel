@@ -13,6 +13,8 @@ on:
 jobs:
   run-etl:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
     # 1. Checkout kode dari repositori GitHub
@@ -29,7 +31,7 @@ jobs:
     # 3. Instal semua pustaka dependensi dari requirements.txt
     - name: Install Dependencies
       run: |
-        python -ms pip install --upgrade pip
+        python -m pip install --upgrade pip
         pip install -r requirements.txt
 
     # 4. Jalankan Pipeline ETL
