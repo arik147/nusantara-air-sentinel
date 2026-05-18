@@ -66,8 +66,8 @@ Data disimpan dalam tabel `weather_air_metrics` dengan struktur kolom sebagai be
 
 ### 1. Kloning Repositori & Instalasi Dependensi
 ```bash
-git clone https://github.com/USERNAME-ANDA/weather-air-portfolio.git
-cd weather-air-portfolio
+git clone https://github.com/arik147/nusantara-air-sentinel.git
+cd nusantara-air-sentinel
 pip install -r requirements.txt
 ```
 
@@ -102,14 +102,14 @@ streamlit run src/app/app.py
 ## 🌐 Cara Deploy ke Cloud (Gratis 100%)
 
 ### 1. Hubungkan ke GitHub
-*   Buat repositori baru di akun GitHub Anda bernama `weather-air-portfolio`.
+*   Buat repositori baru di akun GitHub Anda bernama `nusantara-air-sentinel`.
 *   Push kode lokal Anda ke GitHub:
     ```bash
     git init
     git add .
     git commit -m "Initial commit: Nusantara Air Sentinel"
     git branch -M main
-    git remote add origin https://github.com/USERNAME/weather-air-portfolio.git
+    git remote add origin https://github.com/USERNAME/nusantara-air-sentinel.git
     git push -u origin main
     ```
 
