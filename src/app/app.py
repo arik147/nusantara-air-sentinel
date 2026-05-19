@@ -27,68 +27,279 @@ st.set_page_config(
 # Custom CSS untuk gaya visual premium (Glassmorphism & Card style)
 st.markdown("""
 <style>
-    /* Mengubah font utama dan background */
+    /* Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    
+    /* Font & Background utama */
+    html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
+        font-family: 'Inter', sans-serif !important;
+    }
     .stApp {
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-        color: #f8fafc;
+        background: linear-gradient(160deg, #0b1120 0%, #162036 50%, #0f1b2d 100%);
+        color: #e2e8f0;
     }
     
-    /* Styling Card Glassmorphism */
-    div[data-testid="stMetricValue"] {
-        font-size: 2.2rem !important;
-        font-weight: 700 !important;
+    /* ===== UNIFIED DARK SIDEBAR ===== */
+    section[data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #0f172a 0%, #1a2540 100%) !important;
+        border-right: 1px solid rgba(255,255,255,0.06);
+    }
+    section[data-testid="stSidebar"] * {
+        color: #cbd5e1 !important;
+    }
+    
+    /* Sidebar Selectbox (dropdown kota) */
+    section[data-testid="stSidebar"] [data-baseweb="select"] {
+        border: none !important;
+        background-color: transparent !important;
+    }
+    section[data-testid="stSidebar"] [data-baseweb="select"] > div {
+        background-color: rgba(15, 23, 42, 0.8) !important;
+        border: 1px solid rgba(56, 189, 248, 0.2) !important;
+        border-radius: 8px !important;
+        color: #e2e8f0 !important;
+    }
+    section[data-testid="stSidebar"] [data-baseweb="popover"] {
+        background-color: #1e293b !important;
+        border: 1px solid rgba(56, 189, 248, 0.15) !important;
+    }
+    section[data-testid="stSidebar"] [data-baseweb="menu"] {
+        background-color: #1e293b !important;
+    }
+    section[data-testid="stSidebar"] [role="option"] {
+        background-color: #1e293b !important;
+        color: #cbd5e1 !important;
+    }
+    section[data-testid="stSidebar"] [role="option"]:hover {
+        background-color: rgba(56, 189, 248, 0.15) !important;
+    }
+    section[data-testid="stSidebar"] [aria-selected="true"] {
+        background-color: rgba(56, 189, 248, 0.2) !important;
+    }
+    
+    /* Sidebar Radio Buttons */
+    section[data-testid="stSidebar"] .stRadio > div {
+        background-color: transparent !important;
+    }
+    section[data-testid="stSidebar"] .stRadio label {
+        color: #94a3b8 !important;
+        transition: color 0.15s ease;
+    }
+    section[data-testid="stSidebar"] .stRadio label:hover {
+        color: #e2e8f0 !important;
+    }
+    section[data-testid="stSidebar"] .stRadio [data-testid="stMarkdownContainer"] {
+        color: #cbd5e1 !important;
+    }
+    
+    /* Sidebar Button (Tarik Data Terbaru) */
+    section[data-testid="stSidebar"] .stButton > button {
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.15) 0%, rgba(14, 165, 233, 0.2) 100%) !important;
+        border: 1px solid rgba(56, 189, 248, 0.3) !important;
         color: #38bdf8 !important;
+        border-radius: 8px !important;
+        font-weight: 600 !important;
+        padding: 8px 16px !important;
+        transition: all 0.2s ease !important;
+    }
+    section[data-testid="stSidebar"] .stButton > button:hover {
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.25) 0%, rgba(14, 165, 233, 0.35) 100%) !important;
+        border-color: rgba(56, 189, 248, 0.5) !important;
+        box-shadow: 0 4px 16px rgba(56, 189, 248, 0.15) !important;
+        transform: translateY(-1px);
     }
     
-    /* Custom Card container */
+    /* Sidebar Divider */
+    section[data-testid="stSidebar"] hr {
+        border-color: rgba(255,255,255,0.06) !important;
+    }
+    
+    /* Sidebar Info Box (Arsitektur) */
+    section[data-testid="stSidebar"] [data-testid="stAlert"] {
+        background-color: rgba(56, 189, 248, 0.06) !important;
+        border: 1px solid rgba(56, 189, 248, 0.12) !important;
+        border-radius: 10px !important;
+        color: #94a3b8 !important;
+    }
+    
+    /* Sidebar Labels */
+    section[data-testid="stSidebar"] .stSelectbox label,
+    section[data-testid="stSidebar"] [data-testid="stSlider"] label,
+    section[data-testid="stSidebar"] .stRadio > label {
+        color: #94a3b8 !important;
+        font-weight: 500 !important;
+        font-size: 0.9rem !important;
+    }
+    
+    /* Jarak antara Label Slider dan Slider-nya */
+    section[data-testid="stSidebar"] [data-testid="stSlider"] [data-testid="stWidgetLabel"] {
+        margin-bottom: 14px !important;
+    }
+    
+    /* ===== METRIC CARD ===== */
     .metric-card {
-        background: rgba(30, 41, 59, 0.45);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 12px;
-        padding: 18px;
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
+        background: rgba(30, 41, 59, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 14px;
+        padding: 20px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         margin-bottom: 12px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        
+        /* Flexbox for equal height and layout alignment */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 165px;
+        height: auto;
+    }
+    .metric-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 32px rgba(56, 189, 248, 0.12);
+        border-color: rgba(56, 189, 248, 0.2);
+    }
+    
+    @media (max-width: 768px) {
+        .metric-card {
+            min-height: 140px;
+            padding: 15px;
+        }
+    }
+    
+    /* Responsive Pollutants Grid */
+    .pollutants-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        width: 100%;
+        margin-bottom: 12px;
+    }
+    
+    @media (max-width: 1200px) {
+        .pollutants-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .pollutants-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    /* Polutan Card */
+    .pollutant-card {
+        background: rgba(30, 41, 59, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 10px;
+        padding: 14px 10px;
+        text-align: center;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .pollutant-card:hover {
+        transform: translateY(-2px);
+        border-color: rgba(56, 189, 248, 0.15);
     }
     
     /* Rekomendasi box styling */
     .rec-box {
-        border-radius: 10px;
-        padding: 15px;
+        border-radius: 12px;
+        padding: 18px;
         margin-top: 10px;
-        border-left: 5px solid;
+        border-left: 4px solid;
+        backdrop-filter: blur(6px);
     }
     .rec-good {
-        background-color: rgba(34, 197, 94, 0.15);
+        background-color: rgba(34, 197, 94, 0.1);
         border-left-color: #22c55e;
         color: #86efac;
     }
     .rec-moderate {
-        background-color: rgba(234, 179, 8, 0.15);
+        background-color: rgba(234, 179, 8, 0.1);
         border-left-color: #eab308;
         color: #fde047;
     }
     .rec-sensitive {
-        background-color: rgba(249, 115, 22, 0.15);
+        background-color: rgba(249, 115, 22, 0.1);
         border-left-color: #f97316;
         color: #fdba74;
     }
     .rec-unhealthy {
-        background-color: rgba(239, 68, 68, 0.15);
+        background-color: rgba(239, 68, 68, 0.1);
         border-left-color: #ef4444;
         color: #fca5a5;
     }
     .rec-very-unhealthy {
-        background-color: rgba(168, 85, 247, 0.15);
+        background-color: rgba(168, 85, 247, 0.1);
         border-left-color: #a855f7;
         color: #d8b4fe;
     }
     .rec-hazardous {
-        background-color: rgba(127, 29, 29, 0.3);
+        background-color: rgba(127, 29, 29, 0.2);
         border-left-color: #7f1d1d;
         color: #fda4af;
     }
+    
+    /* Section Headers */
+    .section-header {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #f1f5f9;
+        padding-bottom: 8px;
+        margin-bottom: 16px;
+        border-bottom: 2px solid rgba(56, 189, 248, 0.2);
+        letter-spacing: -0.01em;
+    }
+    
+    /* Beautiful Custom Streamlit Tabs */
+    [data-testid="stTabs"] {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+        gap: 8px !important;
+        margin-bottom: 20px !important;
+    }
+    [data-testid="stTabs"] [role="tab"] {
+        background-color: rgba(30, 41, 59, 0.4) !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        border-radius: 8px 8px 0 0 !important;
+        padding: 8px 20px !important;
+        color: #94a3b8 !important;
+        font-weight: 500 !important;
+        font-size: 0.95rem !important;
+        transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        height: 42px !important;
+        box-shadow: none !important;
+    }
+    [data-testid="stTabs"] [role="tab"]:hover {
+        background-color: rgba(56, 189, 248, 0.08) !important;
+        color: #38bdf8 !important;
+        border-color: rgba(56, 189, 248, 0.2) !important;
+    }
+    [data-testid="stTabs"] [role="tab"][aria-selected="true"] {
+        background-color: rgba(56, 189, 248, 0.15) !important;
+        color: #38bdf8 !important;
+        font-weight: 700 !important;
+        border-color: rgba(56, 189, 248, 0.3) rgba(56, 189, 248, 0.3) transparent rgba(56, 189, 248, 0.3) !important;
+        border-bottom: 2px solid #38bdf8 !important;
+        box-shadow: 0 -4px 12px rgba(56, 189, 248, 0.05) !important;
+    }
+    
+    /* Footer */
+    .app-footer {
+        text-align: center;
+        padding: 24px 0 12px 0;
+        margin-top: 32px;
+        border-top: 1px solid rgba(255,255,255,0.06);
+        color: #475569;
+        font-size: 0.8rem;
+    }
+    .app-footer a { color: #38bdf8; text-decoration: none; }
+    .app-footer a:hover { text-decoration: underline; }
+    
+    /* Hide Streamlit default elements */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)
 
@@ -153,7 +364,7 @@ def refresh_data():
 # ==========================================
 # 4. SIDEBAR - FILTER & DOKUMENTASI PORTOFOLIO
 # ==========================================
-st.sidebar.markdown("<h2 style='text-align: center;'>⚙️ Kontrol & Filter</h2>", unsafe_allow_html=True)
+st.sidebar.markdown("<h2 style='text-align: center; font-size: 1.5rem; letter-spacing: -0.02em;'>Kontrol & Filter</h2>", unsafe_allow_html=True)
 
 # Load data awal
 df_raw = load_all_metrics()
@@ -165,13 +376,10 @@ if df_raw.empty:
         st.rerun()
     st.stop()
 
-# Filter Kota
+# Filter Parameter Data
 all_cities = sorted(df_raw['city'].unique())
-selected_city = st.sidebar.selectbox("📍 Pilih Kota Pantauan", all_cities)
+selected_city = st.sidebar.selectbox("Pilih Kota Pantauan", all_cities)
 
-# Filter Rentang Waktu
-st.sidebar.markdown("---")
-st.sidebar.markdown("📅 **Filter Waktu**")
 time_options = {
     "1 Hari Terakhir": 1,
     "3 Hari Terakhir": 3,
@@ -179,24 +387,20 @@ time_options = {
     "30 Hari Terakhir": 30,
     "Tampilkan Semua": 365
 }
-selected_time_label = st.sidebar.radio("Rentang Analisis", list(time_options.keys()))
+selected_time_label = st.sidebar.select_slider(
+    "Rentang Analisis Waktu",
+    options=list(time_options.keys()),
+    value="3 Hari Terakhir"
+)
 days_threshold = time_options[selected_time_label]
 
-# Tombol Sinkronisasi Manual
-if st.sidebar.button("🔄 Tarik Data Terbaru", use_container_width=True):
+# Tombol Sinkronisasi Manual (Tindakan Administratif Sistem)
+st.sidebar.markdown("---")
+if st.sidebar.button("Tarik Data Terbaru", use_container_width=True):
     refresh_data()
     st.toast("Data berhasil disegarkan dari Supabase!", icon="🚀")
     st.rerun()
 
-# Penjelasan Arsitektur untuk Portofolio
-st.sidebar.markdown("---")
-st.sidebar.markdown("### 🏗️ Arsitektur Proyek")
-st.sidebar.info("""
-**Supabase Zero Cost Stack**
-*   **Data Pipelines**: Python ETL (`pandas`, `requests`) otomatis berjalan di **GitHub Actions** setiap jam.
-*   **Penyimpanan**: **Supabase PostgreSQL** dengan index optimasi dan unique constraints.
-*   **Visualisasi**: **Streamlit Cloud** & **Plotly** untuk visualisasi tren data cuaca dan AQI realtime.
-""")
 
 # ==========================================
 # 5. PENGOLAHAN DATA & FILTERING
@@ -209,6 +413,28 @@ cutoff_date = datetime.now(pytz.utc) - timedelta(days=days_threshold)
 df_filtered = df_city[df_city['recorded_at'] >= cutoff_date].copy()
 df_filtered = df_filtered.sort_values(by='recorded_at')  # Urutkan kronologis untuk grafik
 
+# Tentukan interval (dtick) dan format label (tickformat) sumbu X berdasarkan rentang waktu
+if days_threshold <= 1:
+    # 1 Hari Terakhir -> Interval per 3 jam
+    chart_dtick = 3 * 3600 * 1000  # 3 jam dalam milidetik
+    chart_tickformat = "%H:%M\n%d %b"
+elif days_threshold <= 3:
+    # 3 Hari Terakhir -> Interval per 6 jam
+    chart_dtick = 6 * 3600 * 1000  # 6 jam dalam milidetik
+    chart_tickformat = "%H:%M\n%d %b"
+elif days_threshold <= 7:
+    # 7 Hari Terakhir -> Interval per 12 jam
+    chart_dtick = 12 * 3600 * 1000  # 12 jam dalam milidetik
+    chart_tickformat = "%H:%M\n%d %b"
+elif days_threshold <= 30:
+    # 30 Hari Terakhir -> Interval per 2 hari
+    chart_dtick = 2 * 24 * 3600 * 1000  # 2 hari dalam milidetik
+    chart_tickformat = "%d %b"
+else:
+    # Semua data -> Interval per 7 hari
+    chart_dtick = 7 * 24 * 3600 * 1000  # 7 hari dalam milidetik
+    chart_tickformat = "%d %b"
+
 # Dapatkan data realtime terkini untuk kota terpilih
 latest_data = df_city.iloc[0]
 
@@ -217,7 +443,7 @@ latest_data = df_city.iloc[0]
 # ==========================================
 col_title, col_status = st.columns([4, 1])
 with col_title:
-    st.markdown(f"<h1 style='margin-bottom:0px;'>🌤️ Nusantara Air Sentinel</h1>", unsafe_allow_html=True)
+    st.markdown(f"<h1 style='margin-bottom:0px; font-size: 2.8rem; font-weight: 800; letter-spacing: -0.03em;'>Nusantara Air Sentinel</h1>", unsafe_allow_html=True)
     st.markdown(f"<p style='color: #94a3b8; font-size:1.1rem;'>Platform Pemantauan Cuaca & Kualitas Udara Real-Time 52 Kota: <b>{latest_data['city']}, {latest_data['country']}</b></p>", unsafe_allow_html=True)
 
 with col_status:
@@ -236,7 +462,7 @@ st.markdown("---")
 # ==========================================
 # 7. RINGKASAN METRIK REALTIME (ROW 1)
 # ==========================================
-st.markdown("### 📊 Kondisi Realtime Terkini")
+st.markdown("<div class='section-header'>Indikator Cuaca & Kualitas Udara</div>", unsafe_allow_html=True)
 col1, col2, col3, col4 = st.columns(4)
 
 # 1. Kualitas Udara (AQI)
@@ -275,13 +501,13 @@ with col2:
     else:
         icon_url = f"https://openweathermap.org/img/wn/{icon_code}@2x.png"
     
-    img_html = f"<img src='{icon_url}' style='width: 40px; height: 40px; vertical-align: middle; margin-right:5px;' />" if icon_url else "🌤️"
+    img_html = f"<img src='{icon_url}' style='width: 24px; height: 24px; vertical-align: middle; margin-top:-3px; margin-right:2px; margin-left:-2px;' />" if icon_url else "🌤️ "
     
     st.markdown(f"""
     <div class="metric-card">
         <span style='font-size: 0.85rem; color: #94a3b8; font-weight:600;'>SUHU & CUACA</span>
         <h2 style='color: #38bdf8; margin: 5px 0 0 0; font-size: 2.3rem;'>{temp_val}°C</h2>
-        <span style='font-size: 0.9rem; color: #e2e8f0; display: block; margin-top:5px;'>{img_html} {desc}</span>
+        <span style='font-size: 0.9rem; color: #94a3b8; display: block; margin-top:5px;'>{img_html}{desc}</span>
     </div>
     """, unsafe_allow_html=True)
 
@@ -307,72 +533,69 @@ with col4:
     </div>
     """, unsafe_allow_html=True)
 
+# Berikan jarak vertikal yang cukup antar baris konten
+st.markdown("<div style='margin-top: 18px;'></div>", unsafe_allow_html=True)
+
 # ==========================================
 # 8. DETAIL POLUTAN & PANDUAN KESEHATAN (ROW 2)
 # ==========================================
-col_details, col_advice = st.columns([3, 2])
+col_details, col_advice = st.columns([3, 2], gap="medium")
 
 with col_details:
-    st.markdown("<h4 style='margin-top:10px;'>🧪 Konsentrasi Polutan Utama</h4>", unsafe_allow_html=True)
+    st.markdown("<div class='section-header'>Konsentrasi Polutan Utama</div>", unsafe_allow_html=True)
     
-    # Buat grid untuk polutan individual
-    pol1, pol2, pol3 = st.columns(3)
-    pol4, pol5, pol6 = st.columns(3)
-    
+    # Data polutan
     pollutants = [
-        {"name": "PM2.5 (Debu Halus)", "val": latest_data['pm25'], "unit": "µg/m³", "col": pol1},
-        {"name": "PM10 (Debu Kasar)", "val": latest_data['pm10'], "unit": "µg/m³", "col": pol2},
-        {"name": "O3 (Ozon)", "val": latest_data['o3'], "unit": "µg/m³", "col": pol3},
-        {"name": "NO2 (Nitrogen Dioksida)", "val": latest_data['no2'], "unit": "µg/m³", "col": pol4},
-        {"name": "SO2 (Sulfur Dioksida)", "val": latest_data['so2'], "unit": "µg/m³", "col": pol5},
-        {"name": "CO (Karbon Monoksida)", "val": latest_data['co'], "unit": "µg/m³", "col": pol6}
+        {"name": "PM2.5 (Debu Halus)", "val": latest_data['pm25'], "unit": "µg/m³"},
+        {"name": "PM10 (Debu Kasar)", "val": latest_data['pm10'], "unit": "µg/m³"},
+        {"name": "O3 (Ozon)", "val": latest_data['o3'], "unit": "µg/m³"},
+        {"name": "NO2 (Nitrogen Dioksida)", "val": latest_data['no2'], "unit": "µg/m³"},
+        {"name": "SO2 (Sulfur Dioksida)", "val": latest_data['so2'], "unit": "µg/m³"},
+        {"name": "CO (Karbon Monoksida)", "val": latest_data['co'], "unit": "µg/m³"}
     ]
     
+    # Render polutan secara responsive menggunakan CSS Grid
+    pollutant_items_html = ""
     for pol in pollutants:
-        with pol["col"]:
-            val_text = f"{pol['val']:.1f}" if pd.notna(pol['val']) else "N/A"
-            st.markdown(f"""
-            <div style='background-color:rgba(30, 41, 59, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 10px; text-align: center; margin-bottom: 10px;'>
-                <span style='font-size:0.75rem; color:#94a3b8; font-weight:500; display:block;'>{pol['name']}</span>
-                <strong style='font-size:1.3rem; color:#f1f5f9; display:inline-block; margin-top:2px;'>{val_text}</strong>
-                <span style='font-size:0.7rem; color:#64748b; display:inline;'> {pol['unit']}</span>
-            </div>
-            """, unsafe_allow_html=True)
+        val_text = f"{pol['val']:.1f}" if pd.notna(pol['val']) else "N/A"
+        pollutant_items_html += f"<div class='pollutant-card'><span style='font-size:0.75rem; color:#94a3b8; font-weight:500; display:flex; align-items:center; justify-content:center; min-height:32px; line-height:1.2; text-align:center;'>{pol['name']}</span><strong style='font-size:1.3rem; color:#f1f5f9; display:inline-block; margin-top:2px;'>{val_text}</strong><span style='font-size:0.7rem; color:#64748b; display:inline;'> {pol['unit']}</span></div>"
+        
+    st.markdown(f"<div class='pollutants-grid'>{pollutant_items_html}</div>", unsafe_allow_html=True)
 
 with col_advice:
-    st.markdown("<h4 style='margin-top:10px;'>🏥 Panduan Aktivitas & Kesehatan</h4>", unsafe_allow_html=True)
+    st.markdown("<div class='section-header'>Panduan Aktivitas & Kesehatan</div>", unsafe_allow_html=True)
     
-    # Konten panduan berdasarkan kategori AQI saat ini
+    # Konten panduan medis-akademis berdasarkan kategori AQI saat ini
     advices = {
         "Baik": {
             "class": "rec-good",
-            "title": "Aman untuk Semua Aktivitas 🧘",
-            "desc": "Kualitas udara sangat baik. Silakan berolahraga di luar ruangan, jalan-jalan, dan ventilasikan ruangan Anda secara bebas."
+            "title": "Aktivitas Normal & Ventilasi Maksimal",
+            "desc": "Konsentrasi polutan berada pada tingkat minimal. Tidak terdeteksi risiko kesehatan bagi seluruh kelompok populasi. Aktivitas luar ruang dapat dilaksanakan tanpa pembatasan dan pertukaran sirkulasi udara dalam ruangan sangat disarankan."
         },
         "Sedang": {
             "class": "rec-moderate",
-            "title": "Kondisi Dapat Diterima 👍",
-            "desc": "Kualitas udara sedang. Orang yang sangat sensitif terhadap polusi sebaiknya membatasi aktivitas fisik yang berat di luar ruangan."
+            "title": "Kualitas Udara Akseptabel dengan Mitigasi Minimal",
+            "desc": "Kadar polutan berada dalam batas ambang aman untuk populasi umum. Namun, individu dengan hipersensitivitas pernapasan ekstrem diimbau memantau respon fisiologis secara mandiri selama melakukan aktivitas fisik jangka panjang di luar ruangan."
         },
         "Tidak Sehat bagi Kelompok Sensitif": {
             "class": "rec-sensitive",
-            "title": "Kelompok Sensitif Harap Waspada 😷",
-            "desc": "Penderita penyakit asma, anak-anak, lansia, dan ibu hamil sebaiknya mengurangi aktivitas fisik yang terlalu lama atau berat di luar ruangan."
+            "title": "Kewaspadaan Protektif bagi Populasi Rentan",
+            "desc": "Peningkatan risiko klinis bagi populasi sensitif (anak-anak, lanjut usia, wanita hamil, serta individu dengan riwayat kelainan kardiorespiratori kronis). Disarankan membatasi durasi paparan luar ruang guna meminimalkan akumulasi pajanan polutan."
         },
         "Tidak Sehat": {
             "class": "rec-unhealthy",
-            "title": "Kurangi Aktivitas Luar Ruangan 🚪",
-            "desc": "Masyarakat umum disarankan menggunakan masker jika beraktivitas lama di luar ruangan. Penderita penyakit pernapasan harap beraktivitas di dalam ruangan saja."
+            "title": "Imbauan Reduksi Aktivitas Luar Ruang & Proteksi Diri",
+            "desc": "Efek kesehatan negatif berpotensi terdeteksi pada populasi umum. Disarankan mereduksi aktivitas fisik intensitas tinggi di ruang terbuka. Penggunaan respirator penyaring partikulat (seperti tipe N95/KN95) sangat disarankan jika berada di luar ruangan."
         },
         "Sangat Tidak Sehat": {
             "class": "rec-very-unhealthy",
-            "title": "Tingkat Bahaya Meningkat 🚨",
-            "desc": "Hindari aktivitas fisik yang lama di luar ruangan bagi semua kalangan. Gunakan air purifier di dalam rumah dan pastikan jendela tertutup rapat."
+            "title": "Restriksi Aktivitas Luar Ruang & Mitigasi Paparan Aktif",
+            "desc": "Risiko gangguan kardiorespiratori meningkat signifikan secara epidemiologis bagi seluruh kalangan. Seluruh populasi diimbau menghindari aktivitas fisik di luar ruangan. Disarankan mengoperasikan alat purifikasi udara HEPA di dalam ruangan dan menutup rapat seluruh ventilasi."
         },
         "Berbahaya": {
             "class": "rec-hazardous",
-            "title": "DARURAT KESEHATAN ⚠️",
-            "desc": "Setiap orang harus menghindari semua aktivitas fisik di luar ruangan. Udara luar ruangan beracun. Tetap di dalam ruangan terlindung."
+            "title": "Peringatan Darurat Kualitas Lingkungan & Isolasi Fisik",
+            "desc": "Keadaan darurat kesehatan lingkungan akut. Paparan udara luar berpotensi memicu efek patologis serius pada organ pernapasan dan pembuluh darah. Diwajibkan menghentikan seluruh aktivitas luar ruang, memblokir sirkulasi udara luar, dan berdiam di ruang tertutup dengan sistem purifikasi udara aktif."
         }
     }
     
@@ -394,12 +617,12 @@ st.markdown("---")
 # ==========================================
 # 9. GRAFIK TREN INTERAKTIF (ROW 3)
 # ==========================================
-st.markdown(f"### 📈 Grafik Analisis Tren - {selected_city} ({selected_time_label})")
+st.markdown(f"<div class='section-header'>Grafik Analisis Tren - {selected_city} ({selected_time_label})</div>", unsafe_allow_html=True)
 
 if df_filtered.empty:
     st.warning("⚠️ Tidak ada data historis yang tersedia untuk filter waktu ini.")
 else:
-    tab1, tab2, tab3 = st.tabs(["📊 Tren Kualitas Udara (AQI & PM2.5)", "🌡️ Tren Parameter Cuaca", "🔄 Korelasi Cuaca vs Polusi"])
+    tab1, tab2, tab3 = st.tabs(["Tren Kualitas Udara (AQI & PM2.5)", "Tren Parameter Cuaca", "Korelasi Cuaca vs Polusi"])
     
     with tab1:
         # Grafik Line AQI & PM2.5 menggunakan Plotly
@@ -432,13 +655,25 @@ else:
             paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)',
             hovermode='x unified',
-            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.05,
+                xanchor="center",
+                x=0.5,
+                font=dict(size=12, color='#f1f5f9'),
+                bgcolor='rgba(15, 23, 42, 0.65)',
+                bordercolor='rgba(255, 255, 255, 0.08)',
+                borderwidth=1
+            ),
             margin=dict(l=20, r=20, t=40, b=20),
             font=dict(color='#94a3b8'),
             xaxis=dict(
                 showgrid=True, 
                 gridcolor='rgba(255,255,255,0.05)',
-                title="Waktu Pembacaan (WIB)"
+                title="Waktu Pembacaan (WIB)",
+                dtick=chart_dtick,
+                tickformat=chart_tickformat
             ),
             yaxis1=dict(
                 title="Indeks AQI Utama", 
@@ -455,7 +690,7 @@ else:
             )
         )
         
-        st.plotly_chart(fig_aqi, use_container_width=True)
+        st.plotly_chart(fig_aqi, width='stretch', key='chart_aqi')
         
     with tab2:
         # Grafik Line Suhu & Kelembaban
@@ -486,13 +721,25 @@ else:
             paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)',
             hovermode='x unified',
-            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.05,
+                xanchor="center",
+                x=0.5,
+                font=dict(size=12, color='#f1f5f9'),
+                bgcolor='rgba(15, 23, 42, 0.65)',
+                bordercolor='rgba(255, 255, 255, 0.08)',
+                borderwidth=1
+            ),
             margin=dict(l=20, r=20, t=40, b=20),
             font=dict(color='#94a3b8'),
             xaxis=dict(
                 showgrid=True, 
                 gridcolor='rgba(255,255,255,0.05)',
-                title="Waktu Pembacaan (WIB)"
+                title="Waktu Pembacaan (WIB)",
+                dtick=chart_dtick,
+                tickformat=chart_tickformat
             ),
             yaxis1=dict(
                 title="Temperatur (°C)", 
@@ -509,7 +756,7 @@ else:
             )
         )
         
-        st.plotly_chart(fig_weather, use_container_width=True)
+        st.plotly_chart(fig_weather, width='stretch', key='chart_weather')
         
     with tab3:
         # Korelasi Cuaca vs Polusi (Scatter Plot dengan Trendline)
@@ -539,19 +786,25 @@ else:
                 paper_bgcolor='rgba(0,0,0,0)',
                 plot_bgcolor='rgba(0,0,0,0)',
                 margin=dict(l=20, r=20, t=20, b=20),
-                font=dict(color='#94a3b8'),
+                font=dict(color='#f1f5f9'),
                 xaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.05)'),
-                yaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.05)')
+                yaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.05)'),
+                legend=dict(
+                    font=dict(size=11, color='#f1f5f9'),
+                    bgcolor='rgba(15, 23, 42, 0.65)',
+                    bordercolor='rgba(255, 255, 255, 0.08)',
+                    borderwidth=1
+                )
             )
             
-            st.plotly_chart(fig_corr, use_container_width=True)
+            st.plotly_chart(fig_corr, width='stretch', key='chart_corr')
 
 st.markdown("---")
 
 # ==========================================
 # 10. PETA INTERAKTIF SEBARAN STASIUN (ROW 4)
 # ==========================================
-st.markdown("### 🗺️ Peta Kualitas Udara Seluruh Kota Pantauan")
+st.markdown("<div class='section-header'>Peta Kualitas Udara Seluruh Kota Pantauan</div>", unsafe_allow_html=True)
 
 # Kelompokkan data terbaru untuk setiap kota
 df_latest_all = df_raw.groupby('city').first().reset_index()
@@ -563,7 +816,7 @@ if df_map.empty:
     st.info("⚠️ Data koordinat stasiun kota tidak lengkap untuk ditampilkan di peta.")
 else:
     # Buat Scatter Mapbox yang sangat premium menggunakan Plotly
-    fig_map = px.scatter_mapbox(
+    fig_map = px.scatter_map(
         df_map,
         lat="latitude",
         lon="longitude",
@@ -580,8 +833,8 @@ else:
         size="aqi",
         size_max=22,
         zoom=4.5,
-        center={"lat": -2.5, "lon": 118.0},  # Fokus pas di tengah kepulauan Indonesia
-        mapbox_style="carto-darkmatter",     # Style dark map gratis yang sangat futuristik
+        center={"lat": -2.5, "lon": 118.0},
+        map_style="carto-darkmatter",
         height=450
     )
     
@@ -599,4 +852,12 @@ else:
         )
     )
     
-    st.plotly_chart(fig_map, use_container_width=True)
+    st.plotly_chart(fig_map, width='stretch', key='chart_map')
+
+st.markdown("""
+<div class='app-footer'>
+    <p>&copy; 2026 Arik Rizki Akbar. All Rights Reserved.</p>
+    <p>Nusantara Air Sentinel &mdash; Real-Time Weather & Air Quality Monitoring Platform</p>
+    <p>Built with Python &bull; Supabase &bull; Streamlit &bull; Plotly &bull; GitHub Actions &bull; <a href='https://github.com/arik147/nusantara-air-sentinel' target='_blank'>GitHub Repository</a></p>
+</div>
+""", unsafe_allow_html=True)
