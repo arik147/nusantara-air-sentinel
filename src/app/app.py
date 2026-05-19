@@ -28,15 +28,38 @@ st.set_page_config(
 st.markdown("""
 <style>
     /* Google Fonts */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
     
     /* Font & Background utama */
     html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
-        font-family: 'Inter', sans-serif !important;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
     .stApp {
         background: linear-gradient(160deg, #0b1120 0%, #162036 50%, #0f1b2d 100%);
         color: #e2e8f0;
+    }
+    
+    /* ===== HIDE DEFAULT STREAMLIT ELEMENTS ===== */
+    [data-testid="stHeader"] {
+        background: transparent !important;
+        height: 0px !important;
+        overflow: hidden !important;
+        display: none !important;
+    }
+    header[data-testid="stHeader"] {
+        display: none !important;
+    }
+    [data-testid="stToolbar"] {
+        display: none !important;
+    }
+    .stDeployButton {
+        display: none !important;
+    }
+    #MainMenu {
+        display: none !important;
+    }
+    footer {
+        display: none !important;
     }
     
     /* ===== UNIFIED DARK SIDEBAR ===== */
@@ -72,6 +95,7 @@ st.markdown("""
     }
     section[data-testid="stSidebar"] [role="option"]:hover {
         background-color: rgba(56, 189, 248, 0.15) !important;
+        color: #e2e8f0 !important;
     }
     section[data-testid="stSidebar"] [aria-selected="true"] {
         background-color: rgba(56, 189, 248, 0.2) !important;
@@ -136,35 +160,95 @@ st.markdown("""
         margin-bottom: 14px !important;
     }
     
-    /* ===== METRIC CARD ===== */
+    /* ===== PREMIUM METRIC CARD ===== */
     .metric-card {
-        background: rgba(30, 41, 59, 0.5);
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        border-radius: 14px;
-        padding: 20px;
-        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.45) 0%, rgba(15, 23, 42, 0.65) 100%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        border-radius: 16px !important;
+        padding: 22px 20px !important;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+        backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
         margin-bottom: 12px;
-        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         
-        /* Flexbox for equal height and layout alignment */
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        min-height: 165px;
+        min-height: 170px;
         height: auto;
     }
     .metric-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 32px rgba(56, 189, 248, 0.12);
-        border-color: rgba(56, 189, 248, 0.2);
+        transform: translateY(-4px) !important;
+        box-shadow: 0 12px 40px rgba(56, 189, 248, 0.15) !important;
+        border-color: rgba(56, 189, 248, 0.25) !important;
+    }
+    .metric-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+    .metric-label {
+        font-size: 0.75rem !important;
+        color: #94a3b8 !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.08em !important;
+        text-transform: uppercase;
+    }
+    .metric-icon-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        font-size: 1.1rem;
+        box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.1);
+    }
+    .metric-body {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+    .metric-value {
+        margin: 0 !important;
+        font-size: 2.5rem !important;
+        font-weight: 800 !important;
+        line-height: 1.1 !important;
+        letter-spacing: -0.02em !important;
+    }
+    .metric-status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        width: fit-content;
+        margin-top: 4px;
+    }
+    .badge-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        display: inline-block;
+        box-shadow: 0 0 8px currentColor;
+    }
+    .metric-subtext {
+        font-size: 0.85rem;
+        color: #cbd5e1;
+        margin-top: 4px;
     }
     
     @media (max-width: 768px) {
         .metric-card {
-            min-height: 140px;
-            padding: 15px;
+            min-height: 150px;
+            padding: 15px !important;
+        }
+        .metric-value {
+            font-size: 2.1rem !important;
         }
     }
     
@@ -172,7 +256,7 @@ st.markdown("""
     .pollutants-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
+        gap: 12px;
         width: 100%;
         margin-bottom: 12px;
     }
@@ -191,25 +275,31 @@ st.markdown("""
     
     /* Polutan Card */
     .pollutant-card {
-        background: rgba(30, 41, 59, 0.4);
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        border-radius: 10px;
-        padding: 14px 10px;
+        background: rgba(30, 41, 59, 0.3) !important;
+        border: 1px solid rgba(255, 255, 255, 0.04) !important;
+        border-radius: 12px !important;
+        padding: 16px 12px !important;
         text-align: center;
-        transition: transform 0.2s ease, border-color 0.2s ease;
+        backdrop-filter: blur(8px);
+        transition: all 0.2s ease !important;
     }
     .pollutant-card:hover {
-        transform: translateY(-2px);
-        border-color: rgba(56, 189, 248, 0.15);
+        transform: translateY(-3px) !important;
+        border-color: rgba(56, 189, 248, 0.2) !important;
+        background: rgba(30, 41, 59, 0.5) !important;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important;
     }
     
     /* Rekomendasi box styling */
     .rec-box {
-        border-radius: 12px;
-        padding: 18px;
+        border-radius: 16px !important;
+        padding: 22px !important;
         margin-top: 10px;
-        border-left: 4px solid;
-        backdrop-filter: blur(6px);
+        border-left: 5px solid !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+        transition: all 0.3s ease;
     }
     .rec-good {
         background-color: rgba(34, 197, 94, 0.1);
@@ -296,10 +386,6 @@ st.markdown("""
     }
     .app-footer a { color: #38bdf8; text-decoration: none; }
     .app-footer a:hover { text-decoration: underline; }
-    
-    /* Hide Streamlit default elements */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)
 
@@ -482,10 +568,17 @@ with col1:
     color = aqi_colors.get(aqi_cat, "#94a3b8")
     
     st.markdown(f"""
-    <div class="metric-card">
-        <span style='font-size: 0.85rem; color: #94a3b8; font-weight:600;'>KUALITAS UDARA (AQI)</span>
-        <h2 style='color: {color}; margin: 5px 0 0 0; font-size: 2.3rem;'>{aqi_val}</h2>
-        <span style='font-size: 0.95rem; font-weight:700; color: {color}; display: block; margin-top:2px;'>● {aqi_cat}</span>
+    <div class="metric-card aqi-card">
+        <div class="metric-header">
+            <span class="metric-label">KUALITAS UDARA (AQI)</span>
+            <div class="metric-icon-wrapper" style="background-color: {color}20; color: {color};">🍃</div>
+        </div>
+        <div class="metric-body">
+            <h2 class="metric-value" style="color: {color};">{aqi_val}</h2>
+            <div class="metric-status-badge" style="background-color: {color}15; color: {color}; border: 1px solid {color}30;">
+                <span class="badge-dot" style="background-color: {color};"></span>{aqi_cat}
+            </div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -493,21 +586,19 @@ with col1:
 with col2:
     temp_val = latest_data['temperature']
     desc = latest_data['weather_description']
-    icon_code = latest_data['weather_icon']
-    if pd.isna(icon_code):
-        icon_url = None
-    elif str(icon_code).startswith("http") or str(icon_code).startswith("//"):
-        icon_url = icon_code if str(icon_code).startswith("http") else f"https:{icon_code}"
-    else:
-        icon_url = f"https://openweathermap.org/img/wn/{icon_code}@2x.png"
-    
-    img_html = f"<img src='{icon_url}' style='width: 24px; height: 24px; vertical-align: middle; margin-top:-3px; margin-right:2px; margin-left:-2px;' />" if icon_url else "🌤️ "
     
     st.markdown(f"""
-    <div class="metric-card">
-        <span style='font-size: 0.85rem; color: #94a3b8; font-weight:600;'>SUHU & CUACA</span>
-        <h2 style='color: #38bdf8; margin: 5px 0 0 0; font-size: 2.3rem;'>{temp_val}°C</h2>
-        <span style='font-size: 0.9rem; color: #94a3b8; display: block; margin-top:5px;'>{img_html}{desc}</span>
+    <div class="metric-card weather-card">
+        <div class="metric-header">
+            <span class="metric-label">SUHU & CUACA</span>
+            <div class="metric-icon-wrapper" style="background-color: rgba(56, 189, 248, 0.15); color: #38bdf8;">☀️</div>
+        </div>
+        <div class="metric-body">
+            <h2 class="metric-value" style="color: #38bdf8;">{temp_val}°C</h2>
+            <div class="metric-subtext" style="color: #cbd5e1; font-size: 0.9rem; font-weight: 500;">
+                {desc.title()}
+            </div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -515,10 +606,15 @@ with col2:
 with col3:
     humidity_val = int(latest_data['humidity']) if pd.notna(latest_data['humidity']) else "N/A"
     st.markdown(f"""
-    <div class="metric-card">
-        <span style='font-size: 0.85rem; color: #94a3b8; font-weight:600;'>KELEMBABAN UDARA</span>
-        <h2 style='color: #06b6d4; margin: 5px 0 0 0; font-size: 2.3rem;'>{humidity_val}%</h2>
-        <span style='font-size: 0.9rem; color: #94a3b8; display: block; margin-top:5px;'>💧 Kandungan Uap Air</span>
+    <div class="metric-card humidity-card">
+        <div class="metric-header">
+            <span class="metric-label">KELEMBABAN UDARA</span>
+            <div class="metric-icon-wrapper" style="background-color: rgba(6, 182, 212, 0.15); color: #06b6d4;">💧</div>
+        </div>
+        <div class="metric-body">
+            <h2 class="metric-value" style="color: #06b6d4;">{humidity_val}%</h2>
+            <div class="metric-subtext" style="color: #94a3b8; font-size: 0.9rem; font-weight: 500;">Kandungan Uap Air</div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -526,10 +622,15 @@ with col3:
 with col4:
     wind_val = latest_data['wind_speed']
     st.markdown(f"""
-    <div class="metric-card">
-        <span style='font-size: 0.85rem; color: #94a3b8; font-weight:600;'>KECEPATAN ANGIN</span>
-        <h2 style='color: #818cf8; margin: 5px 0 0 0; font-size: 2.3rem;'>{wind_val} <span style='font-size: 1.2rem;'>km/j</span></h2>
-        <span style='font-size: 0.9rem; color: #94a3b8; display: block; margin-top:5px;'>💨 Aliran Udara</span>
+    <div class="metric-card wind-card">
+        <div class="metric-header">
+            <span class="metric-label">KECEPATAN ANGIN</span>
+            <div class="metric-icon-wrapper" style="background-color: rgba(129, 140, 248, 0.15); color: #818cf8;">💨</div>
+        </div>
+        <div class="metric-body">
+            <h2 class="metric-value" style="color: #818cf8;">{wind_val} <span style='font-size: 1.1rem; font-weight: 500;'>km/j</span></h2>
+            <div class="metric-subtext" style="color: #94a3b8; font-size: 0.9rem; font-weight: 500;">Aliran Udara Utama</div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
