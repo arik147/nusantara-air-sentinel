@@ -1,4 +1,4 @@
-# 🌤️ Nusantara-Air-Sentinel: Real-Time Weather & Air Quality Data Pipeline
+# 🌤️ Nusantara-Air-Sentinel: Near Real-Time Weather & Air Quality Data Pipeline
 ### 🏗️ Serverless Modern Data Stack (ETL Pipeline v2.0 + Supabase PostgreSQL + Streamlit + GitHub Actions)
 
 [![Python](https://img.shields.io/badge/Python-3.10-blue.svg)](https://www.python.org/)
@@ -7,7 +7,7 @@
 [![GitHub Actions](https://img.shields.io/badge/GitHub--Actions-Scheduler-blueviolet.svg)](https://github.com/features/actions)
 [![Pandas](https://img.shields.io/badge/Pandas-ETL-orange.svg)](https://pandas.pydata.org/)
 
-**Nusantara-Air-Sentinel** adalah platform data engineering end-to-end berskala produksi yang dirancang untuk mengumpulkan, memproses, dan memvisualisasikan data cuaca serta kualitas udara ($PM_{2.5}, PM_{10}, O_3, NO_2, SO_2, CO$) secara *real-time* di **52 kota strategis** yang tersebar di seluruh kepulauan Indonesia.
+**Nusantara-Air-Sentinel** adalah platform data engineering end-to-end berskala produksi yang dirancang untuk mengumpulkan, memproses, dan memvisualisasikan data cuaca serta kualitas udara ($PM_{2.5}, PM_{10}, O_3, NO_2, SO_2, CO$) secara *near real-time* di **52 kota strategis** yang tersebar di seluruh kepulauan Indonesia.
 
 Sistem ini mengintegrasikan seluruh tahapan modern data stack (ETL, Data Storage, Serverless Orchestration, dan Presentation) dengan skema **100% GRATIS (Zero-Cost Stack)**.
 
@@ -17,7 +17,7 @@ Sistem ini mengintegrasikan seluruh tahapan modern data stack (ETL, Data Storage
 
 Proyek ini menggunakan **Decoupled Architecture** (memisahkan pemrosesan data backend dengan visualisasi frontend) untuk performa optimal dan reliabilitas yang tinggi:
 
-![Gambaran Arsitektur Sistem](assets/architecture.png)
+![Gambaran Arsitektur Sistem](assets/architecture_v2.png)
 
 ---
 
@@ -33,7 +33,7 @@ Proyek ini menggunakan **Decoupled Architecture** (memisahkan pemrosesan data ba
 4.  **Automation Scheduler**:
     *   **GitHub Actions**: Cron Job serverless terkelola yang memicu ETL secara otomatis setiap **3 jam** sekali (8 titik data/hari per kota) tanpa memerlukan server VPS berbayar.
 5.  **Presentation & BI Dashboard**:
-    *   **Streamlit & Plotly**: Visualisasi interaktif premium bertema gelap (*glassmorphism*), peta interaktif Mapbox sebaran nasional, diagram multi-axis waktu nyata, dan kartu peringatan rekomendasi aktivitas kesehatan yang dinamis.
+    *   **Streamlit & Plotly**: Visualisasi interaktif premium bertema gelap (*glassmorphism*), peta interaktif Mapbox sebaran nasional, diagram multi-axis near real-time, dan kartu peringatan rekomendasi aktivitas kesehatan yang dinamis.
 
 ---
 
@@ -144,4 +144,4 @@ streamlit run src/app/app.py
     SUPABASE_URL = "https://project-id-anda.supabase.co"
     SUPABASE_KEY = "anon-public-key-supabase-anda"
     ```
-*   Klik **Deploy!** Website dashboard realtime Anda sekarang sudah aktif secara publik dan siap dicantumkan di CV Anda! 🚀
+*   Klik **Deploy!** Website dashboard near real-time Anda sekarang sudah aktif secara publik dan siap dicantumkan di CV Anda! 🚀

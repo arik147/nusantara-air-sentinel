@@ -39,27 +39,134 @@ st.markdown("""
         color: #e2e8f0;
     }
     
+    /* ===== TITLE GRADIENT & NRT BADGE ===== */
+    .title-gradient {
+        background: linear-gradient(135deg, #e2e8f0 0%, #38bdf8 50%, #06b6d4 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 2.8rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        margin-bottom: 0;
+        line-height: 1.1;
+        display: inline;
+    }
+    .nrt-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(56, 189, 248, 0.12);
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        color: #38bdf8;
+        font-size: 0.7rem;
+        font-weight: 700;
+        padding: 3px 10px;
+        border-radius: 20px;
+        letter-spacing: 0.08em;
+        vertical-align: middle;
+        margin-left: 12px;
+        position: relative;
+        top: -4px;
+    }
+    .nrt-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background-color: #38bdf8;
+        animation: nrtPulse 2s ease-in-out infinite;
+    }
+    @keyframes nrtPulse {
+        0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.5); }
+        50% { opacity: 0.6; box-shadow: 0 0 0 6px rgba(56, 189, 248, 0); }
+    }
+    .subtitle-line {
+        color: #94a3b8;
+        font-size: 1rem;
+        margin-top: 6px;
+        line-height: 1.5;
+    }
+    .city-badge {
+        display: inline-block;
+        background: rgba(56, 189, 248, 0.1);
+        border: 1px solid rgba(56, 189, 248, 0.25);
+        color: #38bdf8;
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 2px 10px;
+        border-radius: 6px;
+        margin-left: 4px;
+    }
+    .timestamp-box {
+        background: rgba(15, 23, 42, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 10px;
+        padding: 12px 16px;
+        text-align: center;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
+    
+    /* ===== PAGE LOAD ANIMATION & SCROLLBAR ===== */
+    @keyframes fadeInBlur {
+        from { opacity: 0; transform: translateY(15px); filter: blur(5px); }
+        to { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+    [data-testid="stAppViewContainer"] > .main {
+        animation: fadeInBlur 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: rgba(148, 163, 184, 0.2);
+        border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(56, 189, 248, 0.5);
+    }
+    
     /* ===== HIDE DEFAULT STREAMLIT ELEMENTS ===== */
     [data-testid="stHeader"] {
         background: transparent !important;
-        height: 0px !important;
-        overflow: hidden !important;
-        display: none !important;
     }
-    header[data-testid="stHeader"] {
-        display: none !important;
-    }
-    [data-testid="stToolbar"] {
-        display: none !important;
-    }
-    .stDeployButton {
-        display: none !important;
-    }
-    #MainMenu {
-        display: none !important;
-    }
+    [data-testid="stDeployButton"],
+    #MainMenu,
+    [data-testid="stToolbar"] [data-testid="stToolbarActions"],
     footer {
         display: none !important;
+    }
+    
+    /* ===== EXPANDER & ACCORDION STYLING ===== */
+    [data-testid="stExpander"] {
+        background-color: rgba(15, 23, 42, 0.4) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 12px !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+        overflow: hidden;
+    }
+    [data-testid="stExpander"] summary {
+        background-color: rgba(30, 41, 59, 0.5) !important;
+        color: #e2e8f0 !important;
+        padding: 12px 18px !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.02em;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        transition: all 0.2s ease;
+    }
+    [data-testid="stExpander"] summary:hover {
+        background-color: rgba(56, 189, 248, 0.1) !important;
+        color: #38bdf8 !important;
+    }
+    [data-testid="stExpanderDetails"] {
+        background: transparent !important;
     }
     
     /* ===== UNIFIED DARK SIDEBAR ===== */
@@ -229,12 +336,17 @@ st.markdown("""
         width: fit-content;
         margin-top: 4px;
     }
+    @keyframes pulseGlow {
+        0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); transform: scale(0.95); }
+        70% { box-shadow: 0 0 10px currentColor, 0 0 0 6px rgba(255, 255, 255, 0); transform: scale(1.15); }
+        100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); transform: scale(0.95); }
+    }
     .badge-dot {
         width: 6px;
         height: 6px;
         border-radius: 50%;
         display: inline-block;
-        box-shadow: 0 0 8px currentColor;
+        animation: pulseGlow 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
     }
     .metric-subtext {
         font-size: 0.85rem;
@@ -269,7 +381,14 @@ st.markdown("""
     
     @media (max-width: 480px) {
         .pollutants-grid {
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px; /* Sedikit dirapatkan agar muat bagus di HP kecil */
+        }
+        .pollutant-value {
+            font-size: 1.25rem !important; /* Disesuaikan sedikit agar angkanya tidak terpotong */
+        }
+        .pollutant-label {
+            font-size: 0.7rem !important;
         }
     }
     
@@ -432,7 +551,8 @@ except Exception as e:
 def load_all_metrics() -> pd.DataFrame:
     """Menarik semua data historis dari database Supabase."""
     try:
-        response = supabase.table("weather_air_metrics").select("*").order("recorded_at", desc=True).execute()
+        # Membatasi tarikan data menjadi 5000 baris terbaru agar performa memori (RAM) aplikasi tetap sangat ringan
+        response = supabase.table("weather_air_metrics").select("*").order("recorded_at", desc=True).limit(5000).execute()
         df = pd.DataFrame(response.data)
         if not df.empty:
             # Ubah string timestamp menjadi tipe datetime dengan timezone Jakarta (WIB)
@@ -467,21 +587,20 @@ all_cities = sorted(df_raw['city'].unique())
 selected_city = st.sidebar.selectbox("Pilih Kota Pantauan", all_cities)
 
 time_options = {
-    "1 Hari Terakhir": 1,
-    "3 Hari Terakhir": 3,
-    "7 Hari Terakhir": 7,
-    "30 Hari Terakhir": 30,
-    "Tampilkan Semua": 365
+    "1 Hari": 1,
+    "3 Hari": 3,
+    "7 Hari": 7,
+    "Semua": 365
 }
 selected_time_label = st.sidebar.select_slider(
     "Rentang Analisis Waktu",
     options=list(time_options.keys()),
-    value="3 Hari Terakhir"
+    value="3 Hari"
 )
 days_threshold = time_options[selected_time_label]
 
 # Tombol Sinkronisasi Manual (Tindakan Administratif Sistem)
-st.sidebar.markdown("---")
+st.sidebar.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
 if st.sidebar.button("Tarik Data Terbaru", use_container_width=True):
     refresh_data()
     st.toast("Data berhasil disegarkan dari Supabase!", icon="🚀")
@@ -521,7 +640,7 @@ else:
     chart_dtick = 7 * 24 * 3600 * 1000  # 7 hari dalam milidetik
     chart_tickformat = "%d %b"
 
-# Dapatkan data realtime terkini untuk kota terpilih
+# Dapatkan data near real-time terkini untuk kota terpilih
 latest_data = df_city.iloc[0]
 
 # ==========================================
@@ -529,24 +648,28 @@ latest_data = df_city.iloc[0]
 # ==========================================
 col_title, col_status = st.columns([4, 1])
 with col_title:
-    st.markdown(f"<h1 style='margin-bottom:0px; font-size: 2.8rem; font-weight: 800; letter-spacing: -0.03em;'>Nusantara Air Sentinel</h1>", unsafe_allow_html=True)
-    st.markdown(f"<p style='color: #94a3b8; font-size:1.1rem;'>Platform Pemantauan Cuaca & Kualitas Udara Real-Time 52 Kota: <b>{latest_data['city']}, {latest_data['country']}</b></p>", unsafe_allow_html=True)
+    st.markdown(f"""
+    <div>
+        <h1 style="margin-bottom:0; line-height:1.1;"><span class="title-gradient">Nusantara Air Sentinel</span><span class="nrt-badge"><span class="nrt-dot"></span>NRT</span></h1>
+        <p class="subtitle-line">Platform Pemantauan Cuaca & Kualitas Udara Near Real-Time &mdash; <span class="city-badge">{latest_data['city']}, {latest_data['country']}</span></p>
+    </div>
+    """, unsafe_allow_html=True)
 
 with col_status:
-    # Waktu Update WIB
     wib_tz = pytz.timezone('Asia/Jakarta')
     local_update = latest_data['recorded_at'].astimezone(wib_tz)
     st.markdown(f"""
-    <div style='background-color:rgba(14, 165, 233, 0.15); border: 1px solid #0ea5e9; border-radius: 8px; padding: 10px; text-align: center;'>
-        <span style='font-size:0.8rem; color:#38bdf8; display:block;'>UPDATE TERAKHIR (WIB)</span>
-        <strong style='font-size:0.95rem; color:#f8fafc;'>{local_update.strftime('%H:%M - %d %b %Y')}</strong>
+    <div class="timestamp-box">
+        <span style='font-size:0.75rem; color:#64748b; display:block; text-transform:uppercase; letter-spacing:0.06em; font-weight:600;'>Update Terakhir (WIB)</span>
+        <strong style='font-size:1rem; color:#f1f5f9; display:block; margin-top:4px;'>{local_update.strftime('%H:%M')}</strong>
+        <span style='font-size:0.78rem; color:#94a3b8;'>{local_update.strftime('%d %b %Y')}</span>
     </div>
     """, unsafe_allow_html=True)
 
 st.markdown("---")
 
 # ==========================================
-# 7. RINGKASAN METRIK REALTIME (ROW 1)
+# 7. RINGKASAN METRIK NEAR REAL-TIME (ROW 1)
 # ==========================================
 st.markdown("<div class='section-header'>Indikator Cuaca & Kualitas Udara</div>", unsafe_allow_html=True)
 col1, col2, col3, col4 = st.columns(4)
@@ -570,7 +693,7 @@ with col1:
     st.markdown(f"""
     <div class="metric-card aqi-card">
         <div class="metric-header">
-            <span class="metric-label">KUALITAS UDARA (AQI)</span>
+            <span class="metric-label" title="Skala AQI (US EPA): 0-50 Baik, 51-100 Sedang, 101-150 Tidak Sehat (Sensitif), 151-200 Tidak Sehat, 201-300 Sangat Tidak Sehat, lebih dari 300 Berbahaya" style="cursor:help;">KUALITAS UDARA (AQI)</span>
             <div class="metric-icon-wrapper" style="background-color: {color}20; color: {color};">🍃</div>
         </div>
         <div class="metric-body">
@@ -590,13 +713,13 @@ with col2:
     st.markdown(f"""
     <div class="metric-card weather-card">
         <div class="metric-header">
-            <span class="metric-label">SUHU & CUACA</span>
+            <span class="metric-label" title="Suhu Udara Sekitar. Suhu ideal rata-rata yang optimal untuk tubuh manusia adalah 20°C - 26°C." style="cursor:help;">SUHU & CUACA</span>
             <div class="metric-icon-wrapper" style="background-color: rgba(56, 189, 248, 0.15); color: #38bdf8;">☀️</div>
         </div>
         <div class="metric-body">
             <h2 class="metric-value" style="color: #38bdf8;">{temp_val}°C</h2>
-            <div class="metric-subtext" style="color: #cbd5e1; font-size: 0.9rem; font-weight: 500;">
-                {desc.title()}
+            <div class="metric-status-badge" style="background-color: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.35);">
+                <span class="badge-dot" style="background-color: #38bdf8;"></span>{desc.title()}
             </div>
         </div>
     </div>
@@ -608,12 +731,14 @@ with col3:
     st.markdown(f"""
     <div class="metric-card humidity-card">
         <div class="metric-header">
-            <span class="metric-label">KELEMBABAN UDARA</span>
+            <span class="metric-label" title="Kandungan uap air di udara (RH). Kering (kurang dari 30%), Ideal (30% sampai 60%), Lembap (lebih dari 60% memicu jamur & bakteri)." style="cursor:help;">KELEMBABAN UDARA</span>
             <div class="metric-icon-wrapper" style="background-color: rgba(6, 182, 212, 0.15); color: #06b6d4;">💧</div>
         </div>
         <div class="metric-body">
             <h2 class="metric-value" style="color: #06b6d4;">{humidity_val}%</h2>
-            <div class="metric-subtext" style="color: #94a3b8; font-size: 0.9rem; font-weight: 500;">Kandungan Uap Air</div>
+            <div class="metric-status-badge" style="background-color: rgba(6, 182, 212, 0.15); color: #06b6d4; border: 1px solid rgba(6, 182, 212, 0.35);">
+                <span class="badge-dot" style="background-color: #06b6d4;"></span>Kandungan Uap Air
+            </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -624,12 +749,14 @@ with col4:
     st.markdown(f"""
     <div class="metric-card wind-card">
         <div class="metric-header">
-            <span class="metric-label">KECEPATAN ANGIN</span>
+            <span class="metric-label" title="Kecepatan angin. Tenang (kurang dari 10 km/j, polusi rawan menumpuk), Sedang (10-25 km/j), Kuat (lebih dari 25 km/j, menerbangkan debu)." style="cursor:help;">KECEPATAN ANGIN</span>
             <div class="metric-icon-wrapper" style="background-color: rgba(129, 140, 248, 0.15); color: #818cf8;">💨</div>
         </div>
         <div class="metric-body">
             <h2 class="metric-value" style="color: #818cf8;">{wind_val} <span style='font-size: 1.1rem; font-weight: 500;'>km/j</span></h2>
-            <div class="metric-subtext" style="color: #94a3b8; font-size: 0.9rem; font-weight: 500;">Aliran Udara Utama</div>
+            <div class="metric-status-badge" style="background-color: rgba(129, 140, 248, 0.15); color: #818cf8; border: 1px solid rgba(129, 140, 248, 0.35);">
+                <span class="badge-dot" style="background-color: #818cf8;"></span>Aliran Udara Utama
+            </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -712,6 +839,42 @@ with col_advice:
         <p style='margin:0; font-size:0.9rem; line-height:1.45;'>{advice['desc']}</p>
     </div>
     """, unsafe_allow_html=True)
+
+st.markdown("---")
+
+with st.expander("Panduan Interpretasi Indikator Lingkungan"):
+    st.markdown('''
+    <div style="display: flex; flex-wrap: wrap; gap: 30px; padding: 12px 5px;">
+        <div style="flex: 1; min-width: 280px;">
+            <h4 style="margin-top:0; color:#38bdf8; font-weight:700; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom:8px; margin-bottom:12px;">Air Quality Index &mdash; AQI</h4>
+            <p style="color:#64748b; font-size:0.8rem; margin-top:-6px; margin-bottom:14px; font-style:italic;">Sumber: U.S. Environmental Protection Agency (EPA), AQI Basics</p>
+            <div style="display:flex; align-items:center; margin-bottom:10px; font-size:0.9rem;"><span style="width:12px; height:12px; border-radius:50%; background-color:#22c55e; margin-right:12px; box-shadow:0 0 8px #22c55e; flex-shrink:0;"></span> <b style="min-width:70px;">0 &ndash; 50</b>&nbsp;&nbsp;Baik &mdash; Kualitas udara memuaskan, risiko polusi rendah</div>
+            <div style="display:flex; align-items:center; margin-bottom:10px; font-size:0.9rem;"><span style="width:12px; height:12px; border-radius:50%; background-color:#eab308; margin-right:12px; box-shadow:0 0 8px #eab308; flex-shrink:0;"></span> <b style="min-width:70px;">51 &ndash; 100</b>&nbsp;&nbsp;Sedang &mdash; Akseptabel; kelompok sensitif mungkin terdampak ringan</div>
+            <div style="display:flex; align-items:center; margin-bottom:10px; font-size:0.9rem;"><span style="width:12px; height:12px; border-radius:50%; background-color:#f97316; margin-right:12px; box-shadow:0 0 8px #f97316; flex-shrink:0;"></span> <b style="min-width:70px;">101 &ndash; 150</b>&nbsp;&nbsp;Tidak Sehat bagi Kelompok Sensitif (anak-anak, lansia, penderita asma)</div>
+            <div style="display:flex; align-items:center; margin-bottom:10px; font-size:0.9rem;"><span style="width:12px; height:12px; border-radius:50%; background-color:#ef4444; margin-right:12px; box-shadow:0 0 8px #ef4444; flex-shrink:0;"></span> <b style="min-width:70px;">151 &ndash; 200</b>&nbsp;&nbsp;Tidak Sehat &mdash; Populasi umum mulai merasakan efek kesehatan</div>
+            <div style="display:flex; align-items:center; margin-bottom:10px; font-size:0.9rem;"><span style="width:12px; height:12px; border-radius:50%; background-color:#a855f7; margin-right:12px; box-shadow:0 0 8px #a855f7; flex-shrink:0;"></span> <b style="min-width:70px;">201 &ndash; 300</b>&nbsp;&nbsp;Sangat Tidak Sehat &mdash; Peringatan darurat kesehatan</div>
+            <div style="display:flex; align-items:center; margin-bottom:8px; font-size:0.9rem;"><span style="width:12px; height:12px; border-radius:50%; background-color:#7f1d1d; margin-right:12px; box-shadow:0 0 8px #7f1d1d; flex-shrink:0;"></span> <b style="min-width:70px;">&gt; 300</b>&nbsp;&nbsp;Berbahaya &mdash; Kondisi kedaruratan, seluruh populasi berisiko serius</div>
+        </div>
+        <div style="flex: 1; min-width: 280px;">
+            <h4 style="margin-top:0; color:#38bdf8; font-weight:700; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom:8px; margin-bottom:12px;">Parameter Meteorologi</h4>
+            <p style="color:#cbd5e1; font-weight:600; margin-bottom:8px; font-size:0.9rem;">Suhu Udara</p>
+            <p style="color:#64748b; font-size:0.78rem; margin-top:-4px; margin-bottom:8px; font-style:italic;">Ref: WHO Housing &amp; Health Guidelines, 2018</p>
+            <div style="display:flex; align-items:center; margin-bottom:6px; font-size:0.88rem;"><span style="color:#06b6d4; font-weight:bold; width:75px; flex-shrink:0;">&lt; 18°C</span> Dingin &mdash; Di bawah ambang kenyamanan termal (risiko hipotermia ringan)</div>
+            <div style="display:flex; align-items:center; margin-bottom:6px; font-size:0.88rem;"><span style="color:#22c55e; font-weight:bold; width:75px; flex-shrink:0;">18 &ndash; 26°C</span> Optimal &mdash; Zona kenyamanan termal (ASHRAE Standard 55)</div>
+            <div style="display:flex; align-items:center; margin-bottom:18px; font-size:0.88rem;"><span style="color:#ef4444; font-weight:bold; width:75px; flex-shrink:0;">&gt; 35°C</span> Panas Ekstrem &mdash; Risiko heat stress dan dehidrasi</div>
+            <p style="color:#cbd5e1; font-weight:600; margin-bottom:8px; font-size:0.9rem;">Kelembapan Relatif (RH)</p>
+            <p style="color:#64748b; font-size:0.78rem; margin-top:-4px; margin-bottom:8px; font-style:italic;">Ref: ASHRAE Standard 55 &amp; WHO Indoor Air Quality Guidelines</p>
+            <div style="display:flex; align-items:center; margin-bottom:6px; font-size:0.88rem;"><span style="color:#06b6d4; font-weight:bold; width:75px; flex-shrink:0;">&lt; 30%</span> Kering &mdash; Risiko iritasi mukosa saluran pernapasan atas</div>
+            <div style="display:flex; align-items:center; margin-bottom:6px; font-size:0.88rem;"><span style="color:#22c55e; font-weight:bold; width:75px; flex-shrink:0;">30 &ndash; 60%</span> Optimal &mdash; Zona kenyamanan fisiologis manusia</div>
+            <div style="display:flex; align-items:center; margin-bottom:18px; font-size:0.88rem;"><span style="color:#ef4444; font-weight:bold; width:75px; flex-shrink:0;">&gt; 60%</span> Lembap &mdash; Mendukung proliferasi fungi &amp; patogen airborne</div>
+            <p style="color:#cbd5e1; font-weight:600; margin-bottom:8px; font-size:0.9rem;">Kecepatan Angin</p>
+            <p style="color:#64748b; font-size:0.78rem; margin-top:-4px; margin-bottom:8px; font-style:italic;">Ref: Skala Beaufort (WMO) &amp; Pedoman BMKG</p>
+            <div style="display:flex; align-items:center; margin-bottom:6px; font-size:0.88rem;"><span style="color:#94a3b8; font-weight:bold; width:75px; flex-shrink:0;">&lt; 12 km/j</span> Angin Tenang &mdash; Ventilasi rendah, polutan cenderung terakumulasi</div>
+            <div style="display:flex; align-items:center; margin-bottom:6px; font-size:0.88rem;"><span style="color:#38bdf8; font-weight:bold; width:75px; flex-shrink:0;">12 &ndash; 28 km/j</span> Sepoi hingga Sedang &mdash; Dispersi polutan memadai</div>
+            <div style="display:flex; align-items:center; margin-bottom:8px; font-size:0.88rem;"><span style="color:#f97316; font-weight:bold; width:75px; flex-shrink:0;">&gt; 28 km/j</span> Kencang &mdash; Potensi resuspensi debu &amp; partikulat kasar (PM10)</div>
+        </div>
+    </div>
+    ''', unsafe_allow_html=True)
 
 st.markdown("---")
 
@@ -958,7 +1121,7 @@ else:
 st.markdown("""
 <div class='app-footer'>
     <p>&copy; 2026 Arik Rizki Akbar. All Rights Reserved.</p>
-    <p>Nusantara Air Sentinel &mdash; Real-Time Weather & Air Quality Monitoring Platform</p>
+    <p>Nusantara Air Sentinel &mdash; Near Real-Time Weather & Air Quality Monitoring Platform</p>
     <p>Built with Python &bull; Supabase &bull; Streamlit &bull; Plotly &bull; GitHub Actions &bull; <a href='https://github.com/arik147/nusantara-air-sentinel' target='_blank'>GitHub Repository</a></p>
 </div>
 """, unsafe_allow_html=True)
